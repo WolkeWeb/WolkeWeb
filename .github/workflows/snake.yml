@@ -1,0 +1,37 @@
+# Draws the contribution graph as a snake in the profile colours, every night and on every push.
+# The images land on the branch "output"; the README loads them from there.
+name: Schlange
+
+on:
+  schedule:
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snake
+  cancel-in-progress: true
+
+jobs:
+  snake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake.svg?color_snake=#7c3aed&color_dots=#ebedf0,#c7d2fe,#a5b4fc,#818cf8,#6366f1
+            dist/snake-dark.svg?color_snake=#f0abfc&color_dots=#161b22,#1e3a5f,#2f5f9e,#4f8fe0,#7dd3fc
+
+      - uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: output
+          build_dir: dist
+          commit_message: "Schlange neu gezeichnet"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
