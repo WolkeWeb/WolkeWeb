@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="205" viewBox="0 0 490 205" role="img" aria-label="Daten &amp; Märkte: Öffentliche Daten, eigene Modelle – und eine ehrliche Rückrechnung, bevor irgendwer irgendwas glaubt.">
+<defs><linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/>
+  <stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+  <animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;.35;1" dur="7s" begin="1.6s" repeatCount="indefinite"/></linearGradient></defs>
+<rect width="490" height="205" rx="18" fill="#0d1117"/>
+<rect x="1" y="1" width="488" height="203" rx="17" fill="none" stroke="#7dd3fc" stroke-opacity=".55" stroke-width="1.5"/>
+<rect width="490" height="205" rx="18" fill="url(#shine)"/>
+<g transform="translate(28 38)"><rect x="6" y="6" width="92" height="84" rx="10" fill="none" stroke="#7dd3fc" stroke-opacity=".25"/>
+<path d="M10 80 L24 72 L38 76 L52 54 L66 60 L80 36 L94 42" fill="none" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="140" stroke-dashoffset="140">
+  <animate attributeName="stroke-dashoffset" values="140;0;0;140" keyTimes="0;.45;.85;1" dur="5s" repeatCount="indefinite"/></path>
+<circle cx="94" cy="42" r="5" fill="#7dd3fc" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.42;.47;.85;.9" dur="5s" repeatCount="indefinite"/></circle></g>
+<text x="132" y="58" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#7dd3fc">Daten &amp; Märkte</text>
+<text x="132" y="92" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" fill="#c9d1d9">Öffentliche Daten, eigene Modelle –</text><text x="132" y="116" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" fill="#c9d1d9">und eine ehrliche Rückrechnung,</text><text x="132" y="140" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" fill="#c9d1d9">bevor irgendwer irgendwas glaubt.</text>
+</svg>

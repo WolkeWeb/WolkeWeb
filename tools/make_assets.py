@@ -83,7 +83,7 @@ def header() -> str:
 '''
 
 
-def typing(lines: list[str], W: int = 900, H: int = 46, size: int = 22, per_line: float = 5.0) -> str:
+def typing(lines: list[str], W: int = 900, H: int = 56, size: int = 22, per_line: float = 5.0) -> str:
     """Lines type themselves, stay with a blinking cursor, and are deleted, one after the other. Each character has
     its own discrete visibility timeline, so the effect does not depend on the viewer's font width."""
     T = per_line * len(lines)
@@ -117,6 +117,8 @@ def typing(lines: list[str], W: int = 900, H: int = 46, size: int = 22, per_line
         parts.append(f'<text x="{W / 2}" y="{H / 2 + size * 0.35:.1f}" text-anchor="middle" font-family="{MONO}" font-size="{size}" '
                      f'fill="{LAV}" xml:space="preserve">{"".join(spans)}</text>')
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{escape(' · '.join(lines))}">
+<defs><linearGradient id="pill" x1="0" x2="1"><stop offset="0" stop-color="{CYAN}"/><stop offset=".5" stop-color="{LAV}"/><stop offset="1" stop-color="{PINK}"/></linearGradient></defs>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="{(H - 2) / 2}" fill="#0d1117" stroke="url(#pill)" stroke-opacity=".7" stroke-width="1.5"/>
 {''.join(parts)}
 </svg>
 '''
@@ -125,7 +127,7 @@ def typing(lines: list[str], W: int = 900, H: int = 46, size: int = 22, per_line
 def terminal() -> str:
     """Types itself line by line and starts over. Commands are revealed character by character inside the same text
     element as the prompt, so the result does not depend on the viewer's monospace font width."""
-    W, H = 820, 330
+    W, H = 600, 330
     prompt = "wolke@web:~$\u00a0"
     steps = [  # (command, output lines)
         ("whoami", ["WolkeWeb · baut Software, die zu Hause läuft"]),
@@ -172,21 +174,24 @@ def terminal() -> str:
 '''
 
 
-def card(x: float, y: float, w: float, h: float, accent: str, icon: str, title: str, lines: list[str], idx: int) -> str:
-    text = "".join(f'<text x="{x + 132}" y="{y + 92 + i * 24}" font-family="{SANS}" font-size="16" fill="#c9d1d9">{escape(l)}</text>' for i, l in enumerate(lines))
-    return f'''<g>
-  <rect x="{x}" y="{y}" width="{w}" height="{h}" rx="18" fill="#0d1117"/>
-  <rect x="{x + 1}" y="{y + 1}" width="{w - 2}" height="{h - 2}" rx="17" fill="none" stroke="{accent}" stroke-opacity=".55" stroke-width="1.5"/>
-  <rect x="{x}" y="{y}" width="{w}" height="{h}" rx="18" fill="url(#shine{idx})"/>
-  <g transform="translate({x + 28} {y + 38})">{icon}</g>
-  <text x="{x + 132}" y="{y + 58}" font-family="{SANS}" font-size="22" font-weight="700" fill="{accent}">{escape(title)}</text>
-  {text}
-</g>'''
+def card(accent: str, icon: str, title: str, lines: list[str], idx: int, w: int = 490, h: int = 205) -> str:
+    """One workshop card as its own image: side by side on a desktop, stacked full-width on a phone."""
+    text = "".join(f'<text x="132" y="{92 + i * 24}" font-family="{SANS}" font-size="16" fill="#c9d1d9">{escape(l)}</text>' for i, l in enumerate(lines))
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(title)}: {escape(' '.join(lines))}">
+<defs><linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/>
+  <stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+  <animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;.35;1" dur="7s" begin="{idx * 0.8:.1f}s" repeatCount="indefinite"/></linearGradient></defs>
+<rect width="{w}" height="{h}" rx="18" fill="#0d1117"/>
+<rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="17" fill="none" stroke="{accent}" stroke-opacity=".55" stroke-width="1.5"/>
+<rect width="{w}" height="{h}" rx="18" fill="url(#shine)"/>
+<g transform="translate(28 38)">{icon}</g>
+<text x="132" y="58" font-family="{SANS}" font-size="22" font-weight="700" fill="{accent}">{escape(title)}</text>
+{text}
+</svg>
+'''
 
 
-def werkstatt() -> str:
-    W, H, gap = 1000, 430, 20
-    cw, ch = (W - gap) / 2, (H - gap) / 2
+def werkstatt() -> dict[str, str]:
     lock = f'''<rect x="10" y="40" width="64" height="52" rx="10" fill="{LAV}"/>
 <path d="M22 42 V26 a20 20 0 0 1 40 0 V42" fill="none" stroke="{LAV}" stroke-width="9" stroke-linecap="round">
   <animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 -9;0 -9;0 0" keyTimes="0;.55;.62;.9;1" dur="4s" repeatCount="indefinite"/></path>
@@ -217,22 +222,12 @@ def werkstatt() -> str:
         f'<rect x="26" y="{29 + i * 24}" width="26" height="4" rx="2" fill="{PINK}" opacity=".6"/>' for i in range(3))
     server = f'''{leds}<g fill="#e0e7ff" opacity=".9"><animateTransform attributeName="transform" type="translate" values="0 0;6 0;0 0" dur="6s" repeatCount="indefinite"/>
 <circle cx="52" cy="4" r="8"/><circle cx="63" cy="0" r="10"/><circle cx="74" cy="5" r="7"/><rect x="45" y="4" width="36" height="8" rx="4"/></g>'''
-    cards = [
-        card(0, 0, cw, ch, LAV, lock, "Zero-Knowledge", ["Verschlüsselt wird im Browser –", "der Server sieht nur Rauschen.", "Standardbibliothek statt Abhängigkeiten."], 0),
-        card(cw + gap, 0, cw, ch, "#fdba74", flame, "Prozedurale Spiele", ["Roguelites in reinem Python –", "Grafik und Sound werden berechnet,", "nicht aus Dateien geladen."], 1),
-        card(0, ch + gap, cw, ch, CYAN, chart, "Daten & Märkte", ["Öffentliche Daten, eigene Modelle –", "und eine ehrliche Rückrechnung,", "bevor irgendwer irgendwas glaubt."], 2),
-        card(cw + gap, ch + gap, cw, ch, PINK, server, "Self-Hosting", ["Docker, Postgres, eigene VM –", "alles läuft im Heimnetz,", "mit Backups und Totmann-Schalter."], 3),
-    ]
-    shines = "".join(
-        f'<linearGradient id="shine{i}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-        f'<stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>'
-        f'<animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;1 0" keyTimes="0;.35;1" dur="7s" begin="{i * 0.8:.1f}s" repeatCount="indefinite"/></linearGradient>'
-        for i in range(4))
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Werkstatt: Zero-Knowledge-Sicherheit, prozedurale Spiele in Python, Daten und Märkte, Self-Hosting">
-<defs>{shines}</defs>
-{''.join(cards)}
-</svg>
-'''
+    return {
+        "karte-sicherheit.svg": card(LAV, lock, "Zero-Knowledge", ["Verschlüsselt wird im Browser –", "der Server sieht nur Rauschen.", "Standardbibliothek statt Abhängigkeiten."], 0),
+        "karte-spiele.svg": card("#fdba74", flame, "Prozedurale Spiele", ["Roguelites in reinem Python –", "Grafik und Sound werden berechnet,", "nicht aus Dateien geladen."], 1),
+        "karte-daten.svg": card(CYAN, chart, "Daten & Märkte", ["Öffentliche Daten, eigene Modelle –", "und eine ehrliche Rückrechnung,", "bevor irgendwer irgendwas glaubt."], 2),
+        "karte-selfhosting.svg": card(PINK, server, "Self-Hosting", ["Docker, Postgres, eigene VM –", "alles läuft im Heimnetz,", "mit Backups und Totmann-Schalter."], 3),
+    }
 
 
 def footer() -> str:
@@ -271,7 +266,7 @@ def main() -> None:
             "Daten rein, Erkenntnis raus – ehrlich gemessen.",
         ]),
         "terminal.svg": terminal(),
-        "werkstatt.svg": werkstatt(),
+        **werkstatt(),
         "footer.svg": footer(),
     }
     for name, svg in files.items():

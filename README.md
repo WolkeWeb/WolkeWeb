@@ -21,13 +21,16 @@ Hier wohnt **WolkeWeb** – eine kleine Werkstatt für Software, die man **selbs
 Keine fremde Cloud, keine Blackbox: Die meisten Projekte laufen (noch) privat auf dem eigenen Server. Das hier ist der Blick durchs Werkstattfenster.
 
 <p align="center">
-  <img src="assets/terminal.svg" width="720" alt="Terminal: whoami – WolkeWeb baut Software, die zu Hause läuft. ls werkstatt: sicherheit, spiele, daten, self-hosting.">
+  <img src="assets/terminal.svg" width="600" alt="Terminal: whoami – WolkeWeb baut Software, die zu Hause läuft. ls werkstatt: sicherheit, spiele, daten, self-hosting.">
 </p>
 
 ## 🛠️ Werkstatt
 
 <p align="center">
-  <img src="assets/werkstatt.svg" width="100%" alt="Zero-Knowledge: verschlüsselt im Browser. Prozedurale Spiele: Roguelites in reinem Python. Daten und Märkte: eigene Modelle, ehrliche Rückrechnung. Self-Hosting: Docker, Postgres, eigene VM.">
+  <img src="assets/karte-sicherheit.svg" width="405" alt="Zero-Knowledge: verschlüsselt wird im Browser, der Server sieht nur Rauschen">
+  <img src="assets/karte-spiele.svg" width="405" alt="Prozedurale Spiele: Roguelites in reinem Python, Grafik und Sound werden berechnet">
+  <img src="assets/karte-daten.svg" width="405" alt="Daten und Märkte: öffentliche Daten, eigene Modelle, ehrliche Rückrechnung">
+  <img src="assets/karte-selfhosting.svg" width="405" alt="Self-Hosting: Docker, Postgres, eigene VM, alles im Heimnetz">
 </p>
 
 ## 🧰 Werkzeugkasten
